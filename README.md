@@ -1,6 +1,6 @@
 # CapstoneProject
-### This Capstone project is to predict the third word based on two given words. The datasets are text from blogs, news and twitter provided by SwiftKey. Due to the computational limitation, I only sampled 0.02% of each dataset as the training dataset. The methodology is N-gram model and Katz Back-Off model. 
-https://chenyuz.shinyapps.io/Milestone/
+#### This Capstone project is to predict the third word based on two given words. The datasets are text from blogs, news and twitter provided by SwiftKey. Due to the computational limitation, I only sampled 0.02% of each dataset as the training dataset. The methodology is N-gram model and Katz Back-Off model. 
+Final Product in Shiny: https://chenyuz.shinyapps.io/Milestone/
 
 ### Data source:
 1. en_US.blogs.txt
