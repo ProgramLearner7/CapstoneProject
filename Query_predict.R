@@ -179,12 +179,12 @@ predict.results = function(pre, unigram, bigram, trigram, discount.bigram, disco
 #### https://towardsdatascience.com/perplexity-intuition-and-derivation-105dd481c8f3
 all.testing = all[!(all$text %in% all.subset), ]
 set.seed(492)
-all.testing.sample = as.character(sample(all.testing$text, 100, replace = TRUE))
+all.testing.sample = as.character(sample(all.testing$text, 200, replace = TRUE))
 
 trigram.testing = ngram.freq(all.testing.sample, 3) %>% filter(freq >=2)
 
-discount.bigram = 0.75
-discount.trigram = 0.75
+discount.bigram = 0.5
+discount.trigram = 0.5
 prob.last.word = function(trigram.testing, unigram, bigram, trigram, discount.bigram, discount.trigram, options = unigram$ngram){
         trigram.testing$pre = lapply(trigram.testing$ngram, function(x) substr(x, 1, str_locate_all(x, "_")[[1]][2,1] -1))  
         trigram.testing$last.word = str_split_fixed(trigram.testing$ngram, "_", 3)[,3]
@@ -202,6 +202,8 @@ prob.last.word = function(trigram.testing, unigram, bigram, trigram, discount.bi
 
 probability.result = prob.last.word(trigram.testing, unigram, bigram, trigram, discount.bigram, discount.trigram)
 
+### Number of matched trigram
+sum(probability.result$last.word == probability.result$prediction)
 ### Number of testing prefix of trigram not in the training data
 zero.prob = sum(is.na(probability.result$last.word.prob))
 ### Perflexity after removing zero probabilities
