@@ -6,8 +6,13 @@ library(wordcloud)
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
-        result <- eventReactive(input$Go, {
-        all.subset = readRDS(url("https://github.com/ProgramLearner7/CapstoneProject/raw/master/all.subset.RData"))
+    result <- eventReactive(input$Go, {
+    
+            validate(
+                    need(length(str_split(input$pre, " ")[[1]]) == 2 & str_split(input$pre, " ")[[1]][2] != "", 
+                         "Please enter two words in the search box with one space in between and no extra space in start/end of the phrase")
+            )
+            all.subset = readRDS(url("https://github.com/ProgramLearner7/CapstoneProject/raw/master/all.subset.RData"))
     
     #Build N-gram Model
     ngram.freq = function(text, ng){
@@ -130,8 +135,8 @@ shinyServer(function(input, output) {
             return(results)
     }
     
-    discount_bigram = 0.8
-    discount_trigram = 0.8
+    discount_bigram = 0.75
+    discount_trigram = 0.75
     predict.results = function(pre., unigram. = unigram, bigram. = bigram, trigram. = trigram, discount.bigram = discount_bigram, discount.trigram = discount_trigram, options = unigram$ngram){
             pre. = tolower(sub(" ", "_", pre.)) 
             obs.trigram.prob = obs.trigram(pre., trigram., bigram., discount.trigram)
@@ -150,10 +155,10 @@ shinyServer(function(input, output) {
             pred = prediction(unobs.trigram, obs.trigram.prob)
     }
     
-    #result.table = predict.results(input$pre)
     result.table = predict.results(input$pre)
-
+    
   })
+        
         output$wordcloud <- renderImage({
                 
                 outfile = tempfile(fileext = ".png")
@@ -172,6 +177,11 @@ shinyServer(function(input, output) {
         output$table = renderTable({
                 result.table = result()
                 result.table[1:6,]
+        })
+        
+        output$predict.word = renderText({
+                top6 = result()
+                as.character(top6$word[1])
         })
 })
 

@@ -13,12 +13,15 @@ shinyUI(fluidPage(
   sidebarLayout(
     sidebarPanel(
        textInput(inputId = "pre", label = "Please enter two words (no space in the end)", value = "Enter Word"),
-       actionButton("Go", "Apply Changes")
+       actionButton("Go", "Apply Changes"),
+       
+       h3("The predicted word is "),
+       textOutput("predict.word")
        ),
     
     # Show a plot of the generated distribution
     mainPanel(
-        h2("The word cloud of the third word. It shows the top 150 words based on its probability"),
+        h2("The word cloud of the possible third words. It shows the top 150 words based on its probability"),
         imageOutput("wordcloud"),
         h2("The probability of top 6 words"),
         tableOutput("table")
